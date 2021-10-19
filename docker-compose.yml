@@ -1,6 +1,16 @@
 version: '3'
 
 services:
+  postgres:
+    image: postgres:12-alpine
+    command: postgres -c wal_level=logical -c max_replication_slots=1
+    ports:
+      - 5432:5432
+    volumes:
+      - .data/postgres:/var/lib/postgresql/data
+    env_file:
+      - .env
+
   redis:
     image: redis:6-alpine
     command: redis-server --appendonly yes
@@ -19,65 +29,6 @@ services:
       - discovery.type=single-node
       - bootstrap.memory_lock=true
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-
-  postgres:
-    image: postgres:12-alpine
-    command: postgres -c wal_level=logical -c max_replication_slots=1
-    ports:
-      - 5432:5432
-    volumes:
-      - .data/postgres:/var/lib/postgresql/data
-    environment:
-      POSTGRES_PASSWORD: postgres
-
-  subquery-node:
-    image: onfinality/subql-node:latest
-    depends_on:
-      - "postgres"
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    volumes:
-      - ./:/app
-    command:
-      - -f=/app
-      - --local
-
-  graphql-engine:
-    image: onfinality/subql-query:latest
-    ports:
-      - 13000:3000
-    depends_on:
-      - "postgres"
-    environment:
-      DB_USER: postgres
-      DB_PASS: postgres
-      DB_DATABASE: postgres
-      DB_HOST: postgres
-      DB_PORT: 5432
-    command:
-      - --name=app
-      - --playground
-
-
-  graphql-engine-hasura:
-    image: hasura/graphql-engine:v1.3.3
-    ports:
-      - "18080:8080"
-    depends_on:
-      - "postgres"
-    environment:
-      HASURA_GRAPHQL_DATABASE_URL: postgres://postgres:postgres@postgres:5432/postgres
-      ## enable the console served by server
-      HASURA_GRAPHQL_ENABLE_CONSOLE: "true" # set to "false" to disable console
-      ## enable debugging mode. It is recommended to disable this in production
-      HASURA_GRAPHQL_DEV_MODE: "true"
-      HASURA_GRAPHQL_ENABLED_LOG_TYPES: startup, http-log, webhook-log, websocket-log, query-log
-      ## uncomment next line to set an admin secret
-      # HASURA_GRAPHQL_ADMIN_SECRET: myadminsecretkey
 
   pgsync:
     image: govpf/pgsync:2.1.0
@@ -98,14 +49,9 @@ services:
       - postgres
       - redis
       - elasticsearch
-      - subquery-node
+    env_file:
+      - .env
     environment:
-      - PG_USER=postgres
-      - PG_HOST=postgres
-      - PG_PASSWORD=postgres
-      - LOG_LEVEL=INFO
-      - ELASTICSEARCH_PORT=9200
-      - ELASTICSEARCH_SCHEME=http
       - ELASTICSEARCH_HOST=elasticsearch
       - REDIS_HOST=redis
 
@@ -127,7 +73,7 @@ services:
   postgraphile:
     image: graphile/postgraphile:v4.12.3
     env_file:
-      - ./postgraphile/.env
+      - .env
     depends_on:
       - postgres
     links:
@@ -144,19 +90,6 @@ services:
           "public",
           "--watch"
       ]
-
-  substrate-node:
-    image: paritytech/ci-linux:002c04ad-20211013
-    working_dir: /var/www/node-template
-    ports:
-      - "9944:9944"
-      - "9933:9933"
-      - "9615:9615"
-    environment:
-      - CARGO_HOME=/var/www/node-template/.cargo
-    volumes:
-      - ../../myrust/substrate-node-template:/var/www/node-template
-    command: bash -c "cargo +nightly build --release && ./target/release/node-template --dev --ws-external --rpc-external --prometheus-external --rpc-cors=all --unsafe-rpc-external --rpc-methods=unsafe"
 
   prometheus:
     image: prom/prometheus:v2.30.2
@@ -216,10 +149,6 @@ services:
     volumes:
       - ./postgres-exporter:/etc/postgres-exporter
     environment:
-      - DATA_SOURCE_URI=postgres:5432/postgres?sslmode=disable
-      - DATA_SOURCE_USER=postgres
-      - DATA_SOURCE_PASS=postgres
-      - PG_EXPORTER_DISABLE_DEFAULT_METRICS=true
       - PG_EXPORTER_EXTEND_QUERY_PATH=/etc/postgres-exporter/query.yaml
     ports:
       - "9187:9187"

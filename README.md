@@ -1,90 +1,64 @@
-# SubQuery - Starter Package
+# Data Monitoring Platform
 
 
-The Starter Package is an example that you can use as a starting point for developing your SubQuery project.
-A SubQuery package defines which data The SubQuery will index from the Substrate blockchain, and how it will store it. 
-
-## Preparation
-
-#### Environment
-
-- [Typescript](https://www.typescriptlang.org/) are required to compile project and define types.  
-
-- Both SubQuery CLI and generated Project have dependencies and require [Node](https://nodejs.org/en/).
-     
-
-#### Install the SubQuery CLI
-
-Install SubQuery CLI globally on your terminal by using Yarn or NPM:
-
-```
-npm install -g @subql/cli
-yarn global add @subql/cli
-```
-
-Run help to see available commands and usage provide by CLI
-```
-subql help
-```
-
-## Initialize the starter package
-
-Inside the directory in which you want to create the SubQuery project, simply replace `project-name` with your project name and run the command:
-```
-subql init --starter project-name
-```
-Then you should see a folder with your project name has been created inside the directory, you can use this as the start point of your project. And the files should be identical as in the [Directory Structure](https://doc.subquery.network/directory_structure.html).
-
-Last, under the project directory, run following command to install all the dependency.
-```
-yarn install
-```
+![](https://i.imgur.com/Rnf3jUh.png)
 
 
-## Configure your project
+- 基础设施包括平行链节点，容器，中心化数据库通过对应的exporter走prometheus统一接入,再由AlertManager将告警接入slack通知，这种数据可视化主要运维使用，定制化要求不高，有些开源的grafana dashboard模板可以直接拿过来用
 
-In the starter package, we have provided a simple example of project configuration. You will be mainly working on the following files:
+- 业务数据分析可以定义一些数据库层面的视图函数，引入了一个postgraphile组件可以基于数据库自动生成graphql查询接口供前端使用
 
-- The Manifest in `project.yaml`
-- The GraphQL Schema in `schema.graphql`
-- The Mapping functions in `src/mappings/` directory
+- 业务统计数据的趋势分析，可以定期存储下来做成时序数据存储到相应的历史数据表，也可以通过postgresql-exporter组件expose到prometheus
 
-For more information on how to write the SubQuery, 
-check out our doc section on [Define the SubQuery](https://doc.subquery.network/define_a_subquery.html) 
+- 引入了一个pgsync组件实时同步pg数据到es
 
-#### Code generation
+- 时序业务数据可以直接在grafana上做数据可视化，通过iframe嵌入App。定制化要求高数据面板视图前端走es和graphql接口自行构建
 
-In order to index your SubQuery project, it is mandatory to build your project first.
-Run this command under the project directory.
+- Since there are many components(Subql app, Postgresql, Elasticsearch, Grafana, Pgsync, Postgraphile and Prometheus, ...) in this stack we may use [docker-compose](https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/docker-compose.yml) to deploy and move to some container orchestration tool like k8s for future
 
-````
-yarn codegen
-````
 
-## Build the project
+- [some predefined dashboards](https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/grafana/provisioning/dashboards/salp.json) will be automatic provisioned in Grafana accessed and viewed via the Grafana UI
 
-In order to deploy your SubQuery project to our hosted service, it is mandatory to pack your configuration before upload.
-Run pack command from root directory of your project will automatically generate a `your-project-name.tgz` file.
+![](https://i.imgur.com/UeG4z8n.png)
 
-```
-yarn build
-```
+![](https://i.imgur.com/5ZM3kh4.png)
 
-## Indexing and Query
+![](https://i.imgur.com/JodQUwT.jpg)
 
-#### Run required systems in docker
 
-Then, under the project directory run following command:
+- pgsync
 
-```
-docker-compose up
-```
-#### Query the project
+we need to define rules to mapping data in postgresql to elasticsearch
+https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/pgsync/schema/salp.json
 
-Open your browser and head to `http://localhost:8080/console`.
+- postgraphile
 
-Under the `DATA` tab, on the left top corner select the schema you just created, it usually named `public`.
-Then you can see the table is currently untracked, click on the `Track` button.
+we need to define [views&functions](https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/postgresql/monitor.sql) in postgresql and postgraphile will turn it into graphql endpoints automaticlly
 
-Finally, head to the `GRAPHQL` tab, in the explorer you should see the table is ready to query.
+![](https://i.imgur.com/SeAIRoH.png)
 
+- postgreql-exporter
+
+we need to define [rules](https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/postgres-exporter/query.yaml) to mapping data in postgresql to prometheus
+
+- alert rules
+
+we need to define [alert rules](https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/prometheus/rule_para.yaml) in prometheums
+
+we can also define alert rules in grafana directly
+
+![](https://i.imgur.com/yG56ynp.png)
+
+- forward alert to slack
+
+we need to add a slack channel and with the [predefind notifiers](https://github.com/bifrost-finance/bifrost-subql/blob/pgsync/grafana/provisioning/notifiers/slack.yaml) alert will be forwarded to slack channel
+
+![](https://i.imgur.com/nnWo3Td.png)
+
+
+- cadvisor
+
+this component is for monitoring the docker containers
+
+![](https://i.imgur.com/cPYDOSh.png)
+![](https://i.imgur.com/1l3bi9m.png)
