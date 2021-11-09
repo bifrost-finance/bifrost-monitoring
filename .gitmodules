@@ -1,0 +1,3 @@
+[submodule "bifrost-subql"]
+	path = bifrost-subql
+	url = https://github.com/bifrost-finance/bifrost-subql

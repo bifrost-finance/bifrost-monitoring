@@ -1,5 +1,4 @@
-# Data Monitoring Platform
-
+# Architecture
 
 ![](https://i.imgur.com/Rnf3jUh.png)
 
@@ -62,3 +61,14 @@ this component is for monitoring the docker containers
 
 ![](https://i.imgur.com/cPYDOSh.png)
 ![](https://i.imgur.com/1l3bi9m.png)
+
+
+# Deploy
+
+- build
+
+```make build```
+
+- start
+    
+```make start```

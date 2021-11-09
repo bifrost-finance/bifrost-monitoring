@@ -1,0 +1,68 @@
+version: '3'
+
+services:
+
+  postgraphile:
+    image: graphile/postgraphile:v4.12.3
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    ports:
+      - 5000:5000
+    command:
+      [
+          "--connection",
+          "postgres://postgres:postgres@postgres:5432/postgres",
+          "--port",
+          "5000",
+          "--schema",
+          "public",
+          "--watch"
+      ]
+
+  redis:
+    image: redis:6-alpine
+    command: redis-server --appendonly yes
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.14.1
+    ports:
+      - "9200:9200"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    environment:
+      - xpack.security.enabled=false
+      - http.host=0.0.0.0
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+
+  pgsync:
+    image: govpf/pgsync:2.1.0
+    volumes:
+      - ./pgsync/schema:/schema
+    command: >
+      sh -c "bootstrap --config /schema/salp.json &&
+            pgsync --config /schema/salp.json --daemon"
+    sysctls:
+      - net.ipv4.tcp_keepalive_time=200
+      - net.ipv4.tcp_keepalive_intvl=200
+      - net.ipv4.tcp_keepalive_probes=5
+    labels:
+      org.label-schema.name: "pgsync"
+      org.label-schema.description: "Postgres to elasticsearch sync"
+      com.label-schema.service-type: "daemon"
+    depends_on:
+      - postgres
+      - redis
+      - elasticsearch
+    env_file:
+      - .env
+    environment:
+      - ELASTICSEARCH_HOST=elasticsearch
+      - REDIS_HOST=redis
