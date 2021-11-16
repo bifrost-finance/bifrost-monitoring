@@ -8,7 +8,7 @@ update-bifrost-subql:
 
 .PHONY: build
 build:
-	cd bifrost-subql && yarn && yarn codegen && yarn build
+	cd bifrost-subql && rm -rf dist && yarn && yarn codegen && yarn build
 
 .PHONY: run
 run:
@@ -22,9 +22,13 @@ init-monitor-sql:
 sleep:
 	sleep 10s
 
-.PHONY: start
-start:
+.PHONY: init
+init:
 	make run && make sleep && make init-monitor-sql
+
+.PHONY: stop
+stop:
+	docker-compose -f docker-compose.yml -f bifrost-subql/docker-compose-monitor.yml down
 
 .PHONY: run-full
 run-full:
