@@ -16,7 +16,7 @@ run:
 
 .PHONY: init-monitor-sql
 init-monitor-sql:
-	cat ./postgresql/monitor.sql | docker exec -i bifrost-monitoring_postgres_1 psql -U postgres -d postgres
+	sh ./postgresql/init.sh
 
 .PHONY: sleep
 sleep:

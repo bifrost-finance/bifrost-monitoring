@@ -22,7 +22,6 @@
   "fiscalYearStartMonth": 0,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 2,
   "links": [
     {
       "asDropdown": false,
@@ -39,6 +38,143 @@
   ],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": "postgres-12",
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"value\"\nFROM salp_contributeds\nWHERE\n  $__timeFilter(block_timestamp)\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "balance"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "sum"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "value"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "salp_contributeds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "Total Contribution",
+      "type": "timeseries"
+    },
+    {
+      "collapsed": false,
+      "datasource": null,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 8
+      },
+      "id": 8,
+      "panels": [],
+      "title": "Unconfirmed contributions",
+      "type": "row"
+    },
     {
       "alert": {
         "alertRuleTags": {
@@ -130,7 +266,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 9
       },
       "id": 6,
       "options": {
@@ -188,7 +324,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 17
       },
       "id": 4,
       "title": "Top 2 contributors",
@@ -249,7 +385,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 9
+        "y": 18
       },
       "id": 2,
       "options": {
@@ -275,7 +411,7 @@
           "group": [],
           "metricColumn": "none",
           "rawQuery": true,
-          "rawSql": "select NOW() AS \"time\", para_id::text AS metric, contributed as value FROM topN_contributors",
+          "rawSql": "select NOW() AS \"time\", para_id::text AS metric, contributed as value FROM top_contributors",
           "refId": "A",
           "select": [
             [
@@ -297,7 +433,7 @@
           ]
         }
       ],
-      "title": "Top 2 contributors for Crowdloan",
+      "title": "Top contributor in fund",
       "type": "barchart"
     }
   ],
@@ -309,12 +445,12 @@
     "list": []
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "salp",
   "uid": "3y1pN8D7k",
-  "version": 25
+  "version": 1
 }

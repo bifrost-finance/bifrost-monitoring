@@ -9,7 +9,7 @@ select * from salp_contributions t where t.message_id in (
    ) and t.block_timestamp < NOW() - INTERVAL '1 HOURS';
 
 
-CREATE OR REPLACE VIEW top2_contributors as
+CREATE OR REPLACE VIEW top_contributors as
     select * from(
 select para_id,account,contributed,row_number() over (partition by para_id order by contributed desc) as contribution_rank from(
 SELECT
@@ -18,13 +18,4 @@ SELECT
 FROM salp_contributions
 GROUP BY para_id,account
 ORDER BY contributed desc) contributions) ranks
-where contribution_rank<=2;
-
-
-CREATE TABLE IF NOT EXISTS "public"."vesting_investors" ("account" text UNIQUE);
-
-INSERT INTO
-    "public"."vesting_investors" ("account")
-VALUES
-    ('investor-1'),
-    ('investor-2')
+where contribution_rank<=1;
