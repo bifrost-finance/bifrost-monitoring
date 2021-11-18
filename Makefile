@@ -4,7 +4,7 @@ submodule:
 
 .PHONY: update-bifrost-subql
 update-bifrost-subql:
-	cd bifrost-subql && git checkout master && git pull
+	cd bifrost-subql && git checkout monitor && git pull
 
 .PHONY: build
 build:
