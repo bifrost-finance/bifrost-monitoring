@@ -633,7 +633,7 @@
             "query": {
               "params": [
                 "A",
-                "10m",
+                "24h",
                 "now"
               ]
             },
@@ -880,7 +880,7 @@
             "query": {
               "params": [
                 "A",
-                "5m",
+                "24h",
                 "now"
               ]
             },
@@ -895,6 +895,7 @@
         "for": "1m",
         "frequency": "1m",
         "handler": 1,
+        "message": "Large Contribution or Refund alert",
         "name": "Large Contribution or Refund alert",
         "noDataState": "no_data",
         "notifications": []
@@ -1012,12 +1013,12 @@
     "list": []
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-90d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "salp",
   "uid": "3y1pN8D7k",
-  "version": 1
+  "version": 3
 }
