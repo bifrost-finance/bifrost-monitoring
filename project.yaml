@@ -3423,4 +3423,8 @@ dataSources:
 
         - handler: salpContribution
           kind: substrate/BlockHandler
+        # farming
+        - handler: handleFarmingPoolChange
+          kind: substrate/BlockHandler
+
 
