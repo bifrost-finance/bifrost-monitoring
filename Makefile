@@ -37,3 +37,7 @@ run-full:
 .PHONY: start-full
 start-full:
 	make run-full && make sleep && make init-monitor-sql
+
+.PHONY: reset-grafana
+reset-grafana:
+	docker-compose stop grafana && docker-compose up -d grafana
