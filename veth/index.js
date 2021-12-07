@@ -1,6 +1,6 @@
 var Web3 = require('web3');
 var pgp = require('pg-promise')(/* options */)
-var db = pgp('postgres://postgres:postgres@localhost:5439/postgres')
+var db = pgp('postgres://postgres:postgres@localhost:5432/postgres')
 var axios = require('axios');
 const BigNumber = require('bignumber.js');
 
@@ -23,7 +23,7 @@ async function getSql() {
   const tvl = BigNumber(totalSupply).multipliedBy(price.usd).dividedBy(1e+18).toFixed(10);
   let sql = `INSERT INTO "tvls" ("id", "block_height", "block_timestamp", "currency", "usd", "cny", "total_issuance", "tvl_native", "tvl", "isdex", "created_at", "updated_at") 
   VALUES ('${block.number}-vETH', ${block.number}, to_timestamp(${block.timestamp}), '{"vToken":"ETH"}', 
-  ${price.usd}, ${price.cny}, ${totalSupply}, ${tvl_native}, ${tvl}, 
+  ${price.usd}, null, ${totalSupply}, ${tvl_native}, ${tvl}, 
   'false', to_timestamp(${block.timestamp}), to_timestamp(${block.timestamp}));`;
   console.log(block.timestamp, block.number, sql);
   return sql
