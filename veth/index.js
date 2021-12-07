@@ -1,6 +1,6 @@
 var Web3 = require('web3');
 var pgp = require('pg-promise')(/* options */)
-var db = pgp('postgres://postgres:postgres@localhost:5432/postgres')
+var db = pgp('postgres://postgres:postgres@localhost:5439/postgres')
 var axios = require('axios');
 const BigNumber = require('bignumber.js');
 
@@ -19,11 +19,11 @@ async function getSql() {
   const totalSupply = await contract.methods.totalSupply().call();
   const block = await web3.eth.getBlock("latest");
   const price = await getPrice();
-  const tvl_native = BigNumber(totalSupply).multipliedBy(price).toFixed(0);
-  const tvl = BigNumber(totalSupply).multipliedBy(price).dividedBy(1e+18).toFixed(2);
+  const tvl_native = BigNumber(totalSupply).multipliedBy(price.usd).toFixed(0);
+  const tvl = BigNumber(totalSupply).multipliedBy(price.usd).dividedBy(1e+18).toFixed(10);
   let sql = `INSERT INTO "tvls" ("id", "block_height", "block_timestamp", "currency", "usd", "cny", "total_issuance", "tvl_native", "tvl", "isdex", "created_at", "updated_at") 
   VALUES ('${block.number}-vETH', ${block.number}, to_timestamp(${block.timestamp}), '{"vToken":"ETH"}', 
-  ${price}, 1913.855082390997, ${totalSupply}, ${tvl_native}, ${tvl}, 
+  ${price.usd}, ${price.cny}, ${totalSupply}, ${tvl_native}, ${tvl}, 
   'false', to_timestamp(${block.timestamp}), to_timestamp(${block.timestamp}));`;
   console.log(block.timestamp, block.number, sql);
   return sql
@@ -36,7 +36,7 @@ async function delay(ms) {
 async function getPrice() {
   const url = 'https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd';
   const response = await axios.get(url);
-  return response.data.ethereum.usd
+  return response.data.ethereum
 }
 
 main().catch(console.error).finally(() => process.exit());
