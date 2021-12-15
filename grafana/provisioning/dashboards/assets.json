@@ -1,1617 +1,2507 @@
 {
-	"annotations": {
-	  "list": [
-		{
-		  "builtIn": 1,
-		  "datasource": "-- Grafana --",
-		  "enable": true,
-		  "hide": true,
-		  "iconColor": "rgba(0, 211, 255, 1)",
-		  "name": "Annotations & Alerts",
-		  "target": {
-			"limit": 100,
-			"matchAny": false,
-			"tags": [],
-			"type": "dashboard"
-		  },
-		  "type": "dashboard"
-		}
-	  ]
-	},
-	"editable": true,
-	"fiscalYearStartMonth": 0,
-	"gnetId": null,
-	"graphTooltip": 0,
-	"id": 3,
-	"links": [],
-	"liveNow": false,
-	"panels": [
-	  {
-		"datasource": "postgres-12",
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			}
-		  },
-		  "overrides": [
-			{
-			  "__systemRef": "hideSeriesFrom",
-			  "matcher": {
-				"id": "byNames",
-				"options": {
-				  "mode": "exclude",
-				  "names": [
-					"KSM"
-				  ],
-				  "prefix": "All except:",
-				  "readOnly": true
-				}
-			  },
-			  "properties": [
-				{
-				  "id": "custom.hideFrom",
-				  "value": {
-					"legend": false,
-					"tooltip": false,
-					"viz": true
-				  }
-				}
-			  ]
-			}
-		  ]
-		},
-		"gridPos": {
-		  "h": 9,
-		  "w": 12,
-		  "x": 0,
-		  "y": 0
-		},
-		"id": 10,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom"
-		  },
-		  "tooltip": {
-			"mode": "single"
-		  }
-		},
-		"targets": [
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KSM\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "A",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KSM"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"KSM\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KAR\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KAR\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "B",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KAR"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"KAR\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"BNC\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}' AND\n  section = 'balances' AND\n  method = 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "C",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"BNC"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"native\":\"BNC\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "section",
-				  "=",
-				  "'balances'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "=",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KUSD\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "D",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KUSD"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"stable\":\"KUSD\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"ZLK\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"ZLK\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "E",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"ZLK"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"ZLK\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"vsBond\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency !~* '{\"vsBond\":'\nGROUP BY 1\nORDER BY 1",
-			"refId": "F",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"vsBond"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "!~*",
-				  "'{\"vsBond\":'"
-				],
-				"type": "expression"
-			  }
-			]
-		  }
-		],
-		"title": "Transaction Amount(Non cross chain)",
-		"type": "timeseries"
-	  },
-	  {
-		"datasource": "postgres-12",
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			}
-		  },
-		  "overrides": [
-			{
-			  "__systemRef": "hideSeriesFrom",
-			  "matcher": {
-				"id": "byNames",
-				"options": {
-				  "mode": "exclude",
-				  "names": [
-					"BNC"
-				  ],
-				  "prefix": "All except:",
-				  "readOnly": true
-				}
-			  },
-			  "properties": [
-				{
-				  "id": "custom.hideFrom",
-				  "value": {
-					"legend": false,
-					"tooltip": false,
-					"viz": true
-				  }
-				}
-			  ]
-			}
-		  ]
-		},
-		"gridPos": {
-		  "h": 9,
-		  "w": 12,
-		  "x": 12,
-		  "y": 0
-		},
-		"id": 6,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom"
-		  },
-		  "tooltip": {
-			"mode": "single"
-		  }
-		},
-		"targets": [
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "A",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KSM"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"KSM\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KUSD\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "C",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KUSD"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"stable\":\"KUSD\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"BNC\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "B",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"BNC"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"native\":\"BNC\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"vsKSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "D",
-			"select": [
-			  [
-				{
-				  "params": [
-					"sum(balance)/1000000000000"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"vsKSM"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"vsToken\":\"KSM\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  }
-		],
-		"title": "Transaction Amount(cross out)",
-		"type": "timeseries"
-	  },
-	  {
-		"datasource": "postgres-12",
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			}
-		  },
-		  "overrides": [
-			{
-			  "__systemRef": "hideSeriesFrom",
-			  "matcher": {
-				"id": "byNames",
-				"options": {
-				  "mode": "exclude",
-				  "names": [
-					"KSM"
-				  ],
-				  "prefix": "All except:",
-				  "readOnly": true
-				}
-			  },
-			  "properties": [
-				{
-				  "id": "custom.hideFrom",
-				  "value": {
-					"legend": false,
-					"tooltip": false,
-					"viz": true
-				  }
-				}
-			  ]
-			}
-		  ]
-		},
-		"gridPos": {
-		  "h": 9,
-		  "w": 12,
-		  "x": 0,
-		  "y": 9
-		},
-		"id": 4,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom"
-		  },
-		  "tooltip": {
-			"mode": "single"
-		  }
-		},
-		"targets": [
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KSM\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "A",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KSM"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"KSM\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KAR\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KAR\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "B",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KAR"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"KAR\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"BNC\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}' AND\n  section = 'balances' AND\n  method = 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "C",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"BNC"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"native\":\"BNC\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "section",
-				  "=",
-				  "'balances'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "=",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KUSD\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "D",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KUSD"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"stable\":\"KUSD\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"ZLK\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"ZLK\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
-			"refId": "E",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"ZLK"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"ZLK\"}'"
-				],
-				"type": "expression"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "method",
-				  "~*",
-				  "'Transfer'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"vsBond\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency !~* '{\"vsBond\":'\nGROUP BY 1\nORDER BY 1",
-			"refId": "F",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"vsBond"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "total_transfers",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "!~*",
-				  "'{\"vsBond\":'"
-				],
-				"type": "expression"
-			  }
-			]
-		  }
-		],
-		"title": "Total Transaction(Non cross chain)",
-		"type": "timeseries"
-	  },
-	  {
-		"datasource": "postgres-12",
-		"fieldConfig": {
-		  "defaults": {
-			"color": {
-			  "mode": "palette-classic"
-			},
-			"custom": {
-			  "axisLabel": "",
-			  "axisPlacement": "auto",
-			  "barAlignment": 0,
-			  "drawStyle": "line",
-			  "fillOpacity": 0,
-			  "gradientMode": "none",
-			  "hideFrom": {
-				"legend": false,
-				"tooltip": false,
-				"viz": false
-			  },
-			  "lineInterpolation": "linear",
-			  "lineWidth": 1,
-			  "pointSize": 5,
-			  "scaleDistribution": {
-				"type": "linear"
-			  },
-			  "showPoints": "auto",
-			  "spanNulls": false,
-			  "stacking": {
-				"group": "A",
-				"mode": "none"
-			  },
-			  "thresholdsStyle": {
-				"mode": "off"
-			  }
-			},
-			"mappings": [],
-			"thresholds": {
-			  "mode": "absolute",
-			  "steps": [
-				{
-				  "color": "green",
-				  "value": null
-				},
-				{
-				  "color": "red",
-				  "value": 80
-				}
-			  ]
-			}
-		  },
-		  "overrides": [
-			{
-			  "__systemRef": "hideSeriesFrom",
-			  "matcher": {
-				"id": "byNames",
-				"options": {
-				  "mode": "exclude",
-				  "names": [
-					"BNC"
-				  ],
-				  "prefix": "All except:",
-				  "readOnly": true
-				}
-			  },
-			  "properties": [
-				{
-				  "id": "custom.hideFrom",
-				  "value": {
-					"legend": false,
-					"tooltip": false,
-					"viz": true
-				  }
-				}
-			  ]
-			}
-		  ]
-		},
-		"gridPos": {
-		  "h": 9,
-		  "w": 12,
-		  "x": 12,
-		  "y": 9
-		},
-		"id": 8,
-		"options": {
-		  "legend": {
-			"calcs": [],
-			"displayMode": "list",
-			"placement": "bottom"
-		  },
-		  "tooltip": {
-			"mode": "single"
-		  }
-		},
-		"targets": [
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "A",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KSM"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"token\":\"KSM\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KUSD\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "C",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"KUSD"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"stable\":\"KUSD\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"BNC\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "B",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"BNC"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"native\":\"BNC\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  },
-		  {
-			"format": "time_series",
-			"group": [
-			  {
-				"params": [
-				  "$__interval",
-				  "none"
-				],
-				"type": "time"
-			  }
-			],
-			"hide": false,
-			"metricColumn": "none",
-			"rawQuery": false,
-			"rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"vsKSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
-			"refId": "D",
-			"select": [
-			  [
-				{
-				  "params": [
-					"count(balance)"
-				  ],
-				  "type": "column"
-				},
-				{
-				  "params": [
-					"vsKSM"
-				  ],
-				  "type": "alias"
-				}
-			  ]
-			],
-			"table": "xtokens_transferreds",
-			"timeColumn": "block_timestamp",
-			"timeColumnType": "timestamp",
-			"where": [
-			  {
-				"name": "$__timeFilter",
-				"params": [],
-				"type": "macro"
-			  },
-			  {
-				"datatype": "text",
-				"name": "",
-				"params": [
-				  "currency",
-				  "=",
-				  "'{\"vsToken\":\"KSM\"}'"
-				],
-				"type": "expression"
-			  }
-			]
-		  }
-		],
-		"title": "Total Transaction(cross out)",
-		"type": "timeseries"
-	  }
-	],
-	"schemaVersion": 31,
-	"style": "dark",
-	"tags": [],
-	"templating": {
-	  "list": []
-	},
-	"time": {
-	  "from": "now-24h",
-	  "to": "now"
-	},
-	"timepicker": {},
-	"timezone": "",
-	"title": "assets",
-	"uid": "JkuR-7tnk",
-	"version": 3
-  }
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "gnetId": null,
+  "graphTooltip": 0,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "datasource": "postgres-12",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "KSM"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 0
+      },
+      "id": 10,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KSM\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KAR\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KAR\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KAR"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"KAR\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"BNC\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}' AND\n  section = 'balances' AND\n  method = 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "BNC"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"native\":\"BNC\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "section",
+                "=",
+                "'balances'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "=",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KUSD\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KUSD"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"stable\":\"KUSD\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"ZLK\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"ZLK\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "ZLK"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"ZLK\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"vsBond\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency !~* '{\"vsBond\":'\nGROUP BY 1\nORDER BY 1",
+          "refId": "F",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsBond"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "!~*",
+                "'{\"vsBond\":'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Transaction Amount(Non cross chain)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "postgres-12",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "BNC"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 0
+      },
+      "id": 6,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"KUSD\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KUSD"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"stable\":\"KUSD\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"BNC\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "BNC"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"native\":\"BNC\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(balance)/1000000000000 AS \"vsKSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(balance)/1000000000000"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsKSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsToken\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Transaction Amount(cross out)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "postgres-12",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "KSM"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 9
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KSM\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KAR\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KAR\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KAR"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"KAR\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"BNC\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}' AND\n  section = 'balances' AND\n  method = 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "BNC"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"native\":\"BNC\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "section",
+                "=",
+                "'balances'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "=",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KUSD\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KUSD"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"stable\":\"KUSD\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"ZLK\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"ZLK\"}' AND\n  method ~* 'Transfer'\nGROUP BY 1\nORDER BY 1",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "ZLK"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"ZLK\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "method",
+                "~*",
+                "'Transfer'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"vsBond\"\nFROM total_transfers\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency !~* '{\"vsBond\":'\nGROUP BY 1\nORDER BY 1",
+          "refId": "F",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsBond"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "total_transfers",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "!~*",
+                "'{\"vsBond\":'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Total Transaction(Non cross chain)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "postgres-12",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "__systemRef": "hideSeriesFrom",
+            "matcher": {
+              "id": "byNames",
+              "options": {
+                "mode": "exclude",
+                "names": [
+                  "BNC"
+                ],
+                "prefix": "All except:",
+                "readOnly": true
+              }
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": true
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 9
+      },
+      "id": 8,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"token\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"token\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"KUSD\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"stable\":\"KUSD\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KUSD"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"stable\":\"KUSD\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"BNC\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"native\":\"BNC\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "BNC"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"native\":\"BNC\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  count(balance) AS \"vsKSM\"\nFROM xtokens_transferreds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"KSM\"}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "count(balance)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsKSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "xtokens_transferreds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsToken\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Total Transaction(cross out)",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "postgres-12",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "BNC(dex)"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "super-light-blue",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "dex"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 18
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"vETH\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vToken\":\"ETH\"}' AND\n  isdex = 'false'\nGROUP BY 1\nORDER BY 1",
+          "refId": "I",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vETH"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vToken\":\"ETH\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'false'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"vsDOT\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"DOT\"}' AND\n  isdex = 'false'\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsDOT"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsToken\":\"DOT\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'false'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"vsKSM\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"KSM\"}' AND\n  isdex = 'false'\nGROUP BY 1\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsKSM"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsToken\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'false'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  sum(tvl) AS \"dex\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  isdex = 'true'\nGROUP BY 1\nORDER BY 1",
+          "refId": "F",
+          "select": [
+            [
+              {
+                "params": [
+                  "sum(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "dex"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'true'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"KSM(dex)\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"Token\":\"KSM\"}' AND\n  isdex = 'true'\nGROUP BY 1\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KSM(dex)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"Token\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'true'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"BNC(dex)\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"Native\":\"BNC\"}' AND\n  isdex = 'true'\nGROUP BY 1\nORDER BY 1",
+          "refId": "D",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "BNC(dex)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"Native\":\"BNC\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'true'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"KUSD(dex)\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"Stable\":\"KUSD\"}' AND\n  isdex = 'true'\nGROUP BY 1\nORDER BY 1",
+          "refId": "E",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "KUSD(dex)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"Stable\":\"KUSD\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'true'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"vsKSM(dex)\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsToken\":\"KSM\"}' AND\n  isdex = 'true'\nGROUP BY 1\nORDER BY 1",
+          "refId": "G",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "vsKSM(dex)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsToken\":\"KSM\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'true'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(tvl) AS \"ZLK(dex)\"\nFROM tvls\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"Token\":\"ZLK\"}' AND\n  isdex = 'true'\nGROUP BY 1\nORDER BY 1",
+          "refId": "H",
+          "select": [
+            [
+              {
+                "params": [
+                  "avg(tvl)"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "ZLK(dex)"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "tvls",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"Token\":\"ZLK\"}'"
+              ],
+              "type": "expression"
+            },
+            {
+              "datatype": "bool",
+              "name": "",
+              "params": [
+                "isdex",
+                "=",
+                "'true'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "Tvl",
+      "type": "timeseries"
+    },
+    {
+      "datasource": "postgres-12",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 18
+      },
+      "id": 14,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": true,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(price) AS \"{\"\"vsBond\"\":[\"\"BNC\"\",2001,13,20]}\"\nFROM vs_bond_order_clinchds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsBond\":[\"BNC\",2001,13,20]}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "{\"vsBond\":[\"BNC\",2001,13,20]}"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsBond\":[\"BNC\",2001,13,20]}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  block_timestamp AS \"time\",\n  price,\n  currency\nFROM vs_bond_order_clinchds\nWHERE\n  $__timeFilter(block_timestamp)\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              }
+            ],
+            [
+              {
+                "params": [
+                  "currency"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "format": "time_series",
+          "group": [
+            {
+              "params": [
+                "$__interval",
+                "none"
+              ],
+              "type": "time"
+            }
+          ],
+          "hide": true,
+          "metricColumn": "none",
+          "rawQuery": false,
+          "rawSql": "SELECT\n  $__timeGroupAlias(block_timestamp,$__interval),\n  avg(price) AS \"{\"\"vsBond\"\":[\"\"DOT\"\",2000,13,20]}\"\nFROM vs_bond_order_clinchds\nWHERE\n  $__timeFilter(block_timestamp) AND\n  currency = '{\"vsBond\":[\"DOT\",2000,6,13]}'\nGROUP BY 1\nORDER BY 1",
+          "refId": "C",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              },
+              {
+                "params": [
+                  "avg"
+                ],
+                "type": "aggregate"
+              },
+              {
+                "params": [
+                  "{\"vsBond\":[\"DOT\",2000,13,20]}"
+                ],
+                "type": "alias"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            },
+            {
+              "datatype": "text",
+              "name": "",
+              "params": [
+                "currency",
+                "=",
+                "'{\"vsBond\":[\"DOT\",2000,6,13]}'"
+              ],
+              "type": "expression"
+            }
+          ]
+        }
+      ],
+      "title": "vsBond",
+      "type": "timeseries"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 31,
+  "style": "dark",
+  "tags": [],
+  "templating": {
+    "list": []
+  },
+  "time": {
+    "from": "now-7d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "assets",
+  "uid": "JkuR-7tnk",
+  "version": 7
+}
