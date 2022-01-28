@@ -20,9 +20,8 @@
   },
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1637633497375,
+  "iteration": 1643378479289,
   "links": [
     {
       "asDropdown": false,
@@ -40,7 +39,345 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": "postgres-12",
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 20,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "8.3.1",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "P79512BAAD8EF5D24"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  block_timestamp AS \"time\",\n  sum(balance) OVER (ORDER BY block_timestamp)/1000000000000 AS \"KSM\"\nFROM ksm_fund_contributed\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "P79512BAAD8EF5D24"
+          },
+          "format": "time_series",
+          "group": [],
+          "hide": false,
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  block_timestamp AS \"time\",\n  sum(balance) OVER (ORDER BY block_timestamp)/10000000000 AS \"DOT\"\nFROM dot_fund_contributed\nORDER BY 1",
+          "refId": "B",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "总铸造量",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "P79512BAAD8EF5D24"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  block_timestamp AS \"time\",\n  sum(balance) OVER (ORDER BY block_timestamp)/1000000000000 AS \"KSM\"\nFROM ksm_fund_contributed\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "KSM历史总铸造量",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 6
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom"
+        },
+        "tooltip": {
+          "mode": "single"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "P79512BAAD8EF5D24"
+          },
+          "format": "time_series",
+          "group": [],
+          "metricColumn": "none",
+          "rawQuery": true,
+          "rawSql": "SELECT\n  block_timestamp AS \"time\",\n  sum(balance) OVER (ORDER BY block_timestamp)/10000000000 AS \"DOT\"\nFROM dot_fund_contributed\nORDER BY 1",
+          "refId": "A",
+          "select": [
+            [
+              {
+                "params": [
+                  "price"
+                ],
+                "type": "column"
+              }
+            ]
+          ],
+          "table": "vs_bond_order_clinchds",
+          "timeColumn": "block_timestamp",
+          "timeColumnType": "timestamp",
+          "where": [
+            {
+              "name": "$__timeFilter",
+              "params": [],
+              "type": "macro"
+            }
+          ]
+        }
+      ],
+      "title": "DOT 历史铸造总量",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -121,7 +458,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 0
+        "y": 14
       },
       "id": 10,
       "options": {
@@ -296,7 +633,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "postgres-12",
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -352,7 +692,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 0
+        "y": 14
       },
       "id": 17,
       "options": {
@@ -527,7 +867,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "postgres-12",
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -567,7 +910,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 8
+        "y": 22
       },
       "id": 16,
       "options": {
@@ -584,7 +927,8 @@
         "text": {},
         "tooltip": {
           "mode": "single"
-        }
+        },
+        "xTickLabelRotation": 0
       },
       "targets": [
         {
@@ -654,7 +998,10 @@
         "noDataState": "ok",
         "notifications": []
       },
-      "datasource": "postgres-12",
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -706,7 +1053,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 8
+        "y": 22
       },
       "id": 6,
       "options": {
@@ -759,7 +1106,10 @@
       "type": "timeseries"
     },
     {
-      "datasource": "postgres-12",
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -813,7 +1163,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 16
+        "y": 30
       },
       "id": 2,
       "options": {
@@ -830,7 +1180,8 @@
         "text": {},
         "tooltip": {
           "mode": "single"
-        }
+        },
+        "xTickLabelRotation": 0
       },
       "pluginVersion": "8.2.0",
       "targets": [
@@ -900,7 +1251,10 @@
         "noDataState": "ok",
         "notifications": []
       },
-      "datasource": "postgres-12",
+      "datasource": {
+        "type": "postgres",
+        "uid": "P79512BAAD8EF5D24"
+      },
       "description": "",
       "fieldConfig": {
         "defaults": {
@@ -952,7 +1306,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 16
+        "y": 30
       },
       "id": 18,
       "options": {
@@ -1006,7 +1360,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 31,
+  "schemaVersion": 33,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -1020,10 +1374,7 @@
           "text": "6h",
           "value": "6h"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
-        "label": null,
         "name": "salp_interval",
         "options": [
           {
@@ -1086,12 +1437,13 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-6M",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "salp",
   "uid": "3y1pN8D7k",
-  "version": 2
+  "version": 3,
+  "weekStart": ""
 }
